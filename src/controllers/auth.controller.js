@@ -55,7 +55,8 @@ export const register = async (req, res) => {
         const token = await createAccessToken({ id: userSaved._id });
         //Verificamos si el token de inicio de sesion lo generamos para el entorno local
         //de desarrollo o lo generamos para el servidor en la nube
-        if (process.env.ENVIROMENT == 'local') {
+        const env = process.env.ENVIRONMENT || 'local';
+        if (env === 'local') {
             res.cookie('token', token, {
                 sameSite: 'lax', //Para indicar que el back y front son locales para desarrollo
             });
@@ -64,7 +65,7 @@ export const register = async (req, res) => {
                 sameSite: 'none', //Para peticiones remotas
                 secure: true, //para activar https en deployment
             });
-        }//Fin de if(process.env.ENVIROMENT)
+        }
 
 
         res.json({
@@ -99,7 +100,8 @@ export const login = async (req, res) => {
 
         //Verificamos si el token de inicio de sesion lo generamos para el entorno local
         //de desarrollo o lo generamos para el servidor en la nube
-        if (process.env.ENVIROMENT == 'local') {
+        const envLogin = process.env.ENVIRONMENT || 'local';
+        if (envLogin === 'local') {
             res.cookie('token', token, {
                 sameSite: 'lax', //Para indicar que el back y front son locales para desarrollo
             });
@@ -108,7 +110,7 @@ export const login = async (req, res) => {
                 sameSite: 'none', //Para peticiones remotas
                 secure: true, //para activar https en deployment
             });
-        }//Fin de if(process.env.ENVIROMENT)
+        }
 
         //Obtenemos el rol para el usuario que inicio sesion
         //Y lo asignamos en el return del usuario.
